@@ -11,7 +11,9 @@ import voluptuous as vol
 
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import (CONF_USERNAME, CONF_PASSWORD, CONF_HOST, CONF_MONITORED_CONDITIONS)
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.event import async_call_later
 import homeassistant.helpers.config_validation as cv
 
 _LOGGER = logging.getLogger(__name__)
