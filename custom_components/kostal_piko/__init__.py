@@ -1,0 +1,1 @@
+"""The Kostal Piko 8.0 BA component."""
