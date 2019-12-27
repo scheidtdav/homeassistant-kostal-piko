@@ -10,7 +10,7 @@ import async_timeout
 import voluptuous as vol
 
 from homeassistant.components.sensor import PLATFORM_SCHEMA
-from homeassistant.const import (CONF_USERNAME, CONF_PASSWORD, CONF_HOST, CONF_MONITORED_CONDITIONS)
+from homeassistant.const import (CONF_HOST, CONF_MONITORED_CONDITIONS)
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.event import async_call_later
@@ -91,11 +91,9 @@ SENSOR_TYPES = {
 #    }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Required(CONF_USERNAME): cv.string,
-    vol.Required(CONF_PASSWORD): cv.string,
     vol.Required(CONF_HOST): cv.string,
     vol.Required(CONF_MONITORED_CONDITIONS):
-        vol.All(cv.ensure_list, [vol.In(list(SENSORS))])
+        vol.All(cv.ensure_list, [vol.In(list(SENSOR_TYPES))])
 })
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
@@ -145,9 +143,9 @@ class Piko80BA:
         first = True
         for condition in monitored_conditions:
             if first:
-                self._url += f"?dxsEntries={SENSOR_TYPES[condition.type][3]}"
+                self._url += f"?dxsEntries={SENSOR_TYPES[condition][3]}"
             else:
-                self._url += f"&dxsEntries={SENSOR_TYPES[condition.type][3]}"
+                self._url += f"&dxsEntries={SENSOR_TYPES[condition][3]}"
 
         self.devices = devices
         self.data = {}
@@ -165,7 +163,7 @@ class Piko80BA:
         try:
             websession = async_get_clientsession(self.hass)
             with async_timeout.timeout(10):
-                resp = await websession.get(self.url)
+                resp = await websession.get(self._url)
             if resp.status != 200:
                 try_again(f"{resp.url} returned {resp.status}")
                 return
@@ -178,10 +176,13 @@ class Piko80BA:
         import json
 
         try:
-            self.data = ((json.loads(text))["dxsEntries"][0])["value"]
+            self.data = (json.loads(text))["dxsEntries"]
+        except Exception as err:
+            try_again(err)
+            return
 
         await self.updating_devices()
-        async_call_later(self.hass, 60*60, self.fetching_data)
+        async_call_later(self.hass, 1*60, self.fetching_data)
 
     async def updating_devices(self, *_):
         """Find the current data from self.data."""
@@ -190,11 +191,13 @@ class Piko80BA:
 
         tasks = []
         for dev in self.devices:
-            new_state = self.data[dev.type]
+            for item in self.data:
+                if item["dxsId"] == SENSOR_TYPES[dev.type][3]
+                    new_state = item["value"]
             
-            if new_state != dev._state:
-                dev._state = new_state
-                tasks.append(dev.async_update_ha_state())
+                if new_state != dev._state:
+                    dev._state = new_state
+                    tasks.append(dev.async_update_ha_state())
 
         if tasks:
             await asyncio.wait(tasks)
