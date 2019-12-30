@@ -156,7 +156,7 @@ class Piko80BA:
 
         def try_again(err: str):
             """Retry in 5 to 10 minutes."""
-            minutes = 5 + randrage(6)
+            minutes = 5 + randrange(6)
             _LOGGER.error("Retrying in %i minutes: %s", minutes, err)
             async_call_later(self.hass, minutes * 60, self.fetching_data)
 
