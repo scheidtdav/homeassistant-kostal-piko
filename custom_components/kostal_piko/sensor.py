@@ -192,7 +192,7 @@ class Piko80BA:
         tasks = []
         for dev in self.devices:
             for item in self.data:
-                if item["dxsId"] == SENSOR_TYPES[dev.type][3]
+                if item["dxsId"] == SENSOR_TYPES[dev.type][3]:
                     new_state = item["value"]
             
                 if new_state != dev._state:
