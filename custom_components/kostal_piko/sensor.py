@@ -123,6 +123,7 @@ class Piko80BA:
         for condition in monitored_conditions:
             if first:
                 self._url += f"?dxsEntries={SENSOR_TYPES[condition][3]}"
+                first = False
             else:
                 self._url += f"&dxsEntries={SENSOR_TYPES[condition][3]}"
 
