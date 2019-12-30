@@ -175,7 +175,7 @@ class Piko80BA:
 
             for item in self.data:
                 if item["dxsId"] == SENSOR_TYPES[dev.type][3]:
-                    new_state = item["value"]
+                    new_state = get_state_for_sensor_from_value(item["dsxId"], item["value"])
             
                 if new_state != dev._state:
                     dev._state = new_state
@@ -183,3 +183,9 @@ class Piko80BA:
 
         if tasks:
             await asyncio.wait(tasks)
+
+    def get_state_for_sensor_from_value(self, id, value):
+        if id == SENSOR_TYPES['battery_charging'][3]:
+            return True if value == 0 else False
+        else:
+            return value
