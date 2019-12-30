@@ -175,7 +175,7 @@ class Piko80BA:
 
             for item in self.data:
                 if item["dxsId"] == SENSOR_TYPES[dev.type][3]:
-                    new_state = get_state_for_sensor_from_value(item["dsxId"], item["value"])
+                    new_state = self.get_state_for_sensor_from_value(item["dsxId"], item["value"])
             
                 if new_state != dev._state:
                     dev._state = new_state
