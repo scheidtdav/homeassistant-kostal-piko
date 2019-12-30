@@ -186,6 +186,6 @@ class Piko80BA:
 
     def get_state_for_sensor_from_value(self, id, value):
         if id == SENSOR_TYPES['battery_charging'][3]:
-            return True if value == 0 else False
+            return True if value == 1 else False
         else:
             return value
