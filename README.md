@@ -3,6 +3,14 @@
 
 A custom component to get the readings of a Kostal Piko 8.0 BA inverter
 
+## Installation
+
+tba
+
+## Usage
+Simply add the following lines to your `configuration.yaml` file.
+Make sure to select the monitored conditions you are interested in to not bloat your entities :)
+
 ```
 sensor:
   - platform: kostal_piko
@@ -57,3 +65,14 @@ sensor:
       - self_reliance_rate_total
       - uptime
 ```
+
+## Contributing
+
+The component has only been tested on a Kostal Piko 8.0 BA inverter.
+Other inverters of the same series _should_ work, but testing needs to be done.
+
+## Acknowledgements
+
+Thanks to everyone creating open source software and special thanks to all the people contributing to [www.home-assistant.io](Home Assistant), making it as awesome as it is.
+
+Many thanks to [Giel Janssens](https://github.com/gieljnssns) for creating a [Kostal component](https://github.com/gieljnssns/kostalpiko-sensor-homeassistant) and inspiring me to create my own for this different version of the api.
