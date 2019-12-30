@@ -1,5 +1,5 @@
 # Kostal Piko 8.0 BA
-![Build Status](https://github.com/scheidtdav/kostal-piko-80-ba/workflows/Python%20application/badge.svg)
+![Build Status](https://github.com/scheidtdav/kostal-piko-80-ba/workflows/Flake8%20Lint/badge.svg)
 
 A custom component to get the readings of a Kostal Piko 8.0 BA inverter
 
