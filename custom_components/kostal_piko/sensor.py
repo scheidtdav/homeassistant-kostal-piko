@@ -20,6 +20,19 @@ _LOGGER = logging.getLogger(__name__)
 
 SENSOR_TYPES = {
     'inverter_status' : ['Inverter Status', '', 'mdi:information-outline', 16780032],
+    'battery_charge' : ['Battery Charge', '%', 'mdi:car-battery', 33556229],
+    'inverter_power_consumption' : ['Inverter Power Consumption', 'W', 'mdi:power-plug', 83888128],
+    'inverter_power_output' : ['Power Output', 'W', 'mdi:current-ac', 67109120],
+    'inverter_power_input' : ['Power Input', 'W', 'mdi:current-dc', 33556736],
+    'string1_voltage' : ['Voltage String 1', 'V', 'mdi:flash', 33555202],
+    'string1_current' : ['Current String 1', 'A', 'mdi:current-dc', 33555201],
+    'string1_power' : ['Power String 1', 'W', 'mdi:solar-power', 33555203],
+    'string2_voltage' : ['Voltage String 2', 'V', 'mdi:flash', 33555458],
+    'string2_current' : ['Current String 2', 'A', 'mdi:current-dc', 33555457],
+    'string2_power' : ['Power String 2', 'W', 'mdi:solar-power', 33555459],
+    'string3_voltage' : ['Voltage String 3', 'V', 'mdi:flash', 33555714],
+    'string3_current' : ['Current String 3', 'A', 'mdi:current-dc', 33555713],
+    'string3_power' : ['Power String 3', 'W', 'mdi:solar-power', 33555715],
 
 
     #'operating_mode' : ['Operating Mode', '', ''],
