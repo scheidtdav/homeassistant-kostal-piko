@@ -33,7 +33,7 @@ SENSOR_TYPES = {
     'string3_power' : ['Power String 3', 'W', 'mdi:solar-power', 33555715],
     'battery_voltage' : ['Battery Voltage', 'V', 'mdi:battery-charging-70', 33556226],
     'battery_charge' : ['Battery Charge', '%', 'mdi:car-battery', 33556229],
-    'battery_charging_current' : ['Battery Charging Current', 'A', 'mdi:current-dc', 33556238],
+    'battery_current' : ['Battery Current', 'A', 'mdi:current-dc', 33556238],
     'battery_charging' : ['Battery Charging', '', 'mdi:battery-positive', 33556230],
     'battery_charge_cycles' : ['Battery Charge Cycles', '', 'mdi:battery-heart', 33556228],
     'battery_temperature' : ['Battery Temperature', '°C', 'mdi:thermometer', 33556227],
