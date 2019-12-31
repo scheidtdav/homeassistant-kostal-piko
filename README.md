@@ -73,6 +73,6 @@ Other inverters of the same series _should_ work, but testing needs to be done.
 
 ## Acknowledgements
 
-Thanks to everyone creating open source software and special thanks to all the people contributing to [www.home-assistant.io](Home Assistant), making it as awesome as it is.
+Thanks to everyone creating open source software and special thanks to all the people contributing to [Home Assistant](www.home-assistant.io), making it as awesome as it is.
 
 Many thanks to [Giel Janssens](https://github.com/gieljnssns) for creating a [Kostal component](https://github.com/gieljnssns/kostalpiko-sensor-homeassistant) and inspiring me to create my own for this different version of the api.
