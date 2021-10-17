@@ -48,7 +48,7 @@ class PikoUpdateCoordinator(DataUpdateCoordinator):
         )
         self.hass = hass
         self.config: ConfigEntry = entry
-        self._api: Piko | None = None
+        self._api = None
         self._fetch = list()
 
     def start_fetch_data(self, dxs_id: int) -> None:
