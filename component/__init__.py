@@ -5,7 +5,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
-from .base import PikoApi
+from kostal import Piko, const as PikoConst
 
 _LOGGER = logging.getLogger(__name__)
 
