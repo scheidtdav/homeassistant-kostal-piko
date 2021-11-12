@@ -1,0 +1,22 @@
+{
+    "config": {
+        "flow_title": "Kostal Piko Inverter - Einrichtung",
+        "abort": {
+            "already_configured": "Gerät ist schon konfiguriert."
+        },
+        "error": {
+            "cannot_connect": "Verbindung fehlgeschlagen",
+            "invalid_auth": "Authentifizierung fehlgeschlagen",
+            "unknown": "Unbekannter Fehler"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "host": "Host",
+                    "password": "Passwort",
+                    "username": "User Name"
+                }
+            }
+        }
+    }
+}

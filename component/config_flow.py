@@ -1,10 +1,11 @@
 import logging
+
+from kostal import Piko
 import voluptuous as vol
-import kostal
 
 from homeassistant import config_entries
+from homeassistant.const import CONF_BASE, CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_BASE, CONF_HOST, CONF_PASSWORD
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
@@ -24,38 +25,48 @@ class PikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
 
         data_schema = {
-            vol.Required("host"): str,
-            vol.Required("username"): str,
-            vol.Required("password"): str,
+            vol.Optional(
+                CONF_HOST, description={"suggested_value": "http://192.168.178.xx"}
+            ): str,
+            vol.Optional(CONF_USERNAME, default="pvserver"): str,
+            vol.Optional(CONF_PASSWORD, default="pvwr"): str,
         }
 
         if user_input is not None:
             try:
                 inverter_name = await test_connection(self.hass, user_input)
             except ValueError as err:
-                _LOGGER.error(
-                    "Kostal Piko api returned unknown value: %s", err)
+                _LOGGER.error("Kostal Piko api returned unknown value: %s", err)
                 errors[CONF_BASE] = "unknown"
             except ConnectionError as err:
-                _LOGGER.error(
-                    "Could not connect to Kostal Piko api: %s", err)
+                _LOGGER.error("Could not connect to Kostal Piko api: %s", err)
                 errors[CONF_HOST] = "cannot_connect"
             except Exception as err:
-                _LOGGER.error(
-                    "Unknown error: %s", err)
+                _LOGGER.error("Unknown error: %s", err)
                 errors[CONF_BASE] = "unknown"
 
             if not errors:
                 return self.async_create_entry(title=inverter_name, data=user_input)
 
-        return self.async_show_form(step_id="init", data_schema=vol.Schema(data_schema), errors=errors)
+        return self.async_show_form(
+            step_id="user", data_schema=vol.Schema(data_schema), errors=errors
+        )
 
 
 async def test_connection(hass: HomeAssistant, data) -> str:
     """Tests the connection to the inverter and returns its name"""
+    _LOGGER.info("Test Connection to Piko inverter.")
     session = async_get_clientsession(hass)
-    inverter = kostal.Piko(
-        session, data["host"], data["username"], data["password"])
+
+    inverter = Piko(session, data[CONF_HOST], data[CONF_USERNAME], data[CONF_PASSWORD])
+
     # TODO replace the serial number with the inverter name once implemented in pykostal
-    res = await inverter._Piko__fetch_dxs_entry(kostal.const.InfoVersions["SerialNumber"])
-    return f"Kostal Piko Inverter {res.value}"
+    res = await inverter.get_info_inverter()
+
+    _LOGGER.info(
+        "Found Kostal inverter " + res["InfoInverter"]["InverterName"]["value"]
+    )
+
+    return "Kostal Piko Inverter {}".format(
+        res["InfoInverter"]["InverterName"]["value"]
+    )

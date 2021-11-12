@@ -1,12 +1,28 @@
 """Kostal Piko sensors."""
 import logging
-from homeassistant.core import HomeAssistant
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.components.switch import SensorEntity
 
-from .const import DOMAIN, SENSOR_TYPES
-from kostal import const as PikoConst
+# from kostal import const as PikoConst
+import kostal
+
+from homeassistant.components.sensor import ATTR_STATE_CLASS, SensorEntity
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from .const import (
+    ACTUAL_ANALOG_SENSOR_TYPES,
+    ACTUAL_BATTERY_SENSOR_TYPES,
+    ACTUAL_GRID_SENSOR_TYPES,
+    ACTUAL_HOUSE_SENSOR_TYPES,
+    ACTUAL_PVGENERATOR_SENSOR_TYPES,
+    ACTUAL_SZEROIN_SENSOR_TYPES,
+    DOMAIN,
+    HOME_SENSOR_TYPES,
+    INFO_INVERTER_SENSOR_TYPES,
+    INFO_VERSIONS_SENSOR_TYPES,
+    STATISTIC_DAY_SENSOR_TYPES,
+    STATISTIC_TOTAL_SENSOR_TYPES,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -17,8 +33,9 @@ async def async_setup_entry(
     """Set up the Kostal Piko platform with its sensors"""
     coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
-        KostalPikoSensor(coordinator, description)
-        for description in SENSOR_TYPES)
+        KostalPikoSensor(coordinator, description) for description in SENSOR_TYPES
+    )
+    return True
 
 
 class KostalPikoSensor(CoordinatorEntity, SensorEntity):
