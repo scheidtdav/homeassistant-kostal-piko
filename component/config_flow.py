@@ -1,10 +1,11 @@
 import logging
+
+from kostal import Piko
 import voluptuous as vol
-import kostal
 
 from homeassistant import config_entries
+from homeassistant.const import CONF_BASE, CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_BASE, CONF_HOST, CONF_PASSWORD
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
@@ -14,9 +15,9 @@ _LOGGER = logging.getLogger(__name__)
 # TODO add tests to be accepted to into core
 
 SETUP_SCHEMA = vol.Schema({
-            vol.Required("host"): str,
-            vol.Required("username"): str,
-            vol.Required("password"): str,
+            vol.Required(CONF_HOST, description={"suggested_valed": "http://192.168.178.xyz"}): str,
+            vol.Required(CONF_USERNAME): str,
+            vol.Required(CONF_PASSWORD): str,
         })
 
 async def test_connection(hass: HomeAssistant, data) -> str:
@@ -46,16 +47,13 @@ class KostalPikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             # _LOGGER.error(...)
             # errors[CONF_BASE] = "auth"
             except ValueError as err:
-                _LOGGER.error(
-                    "Kostal Piko api returned unknown value: %s", err)
+                _LOGGER.error("Kostal Piko api returned unknown value: %s", err)
                 errors[CONF_BASE] = "unknown"
             except ConnectionError as err:
-                _LOGGER.error(
-                    "Could not connect to Kostal Piko api: %s", err)
+                _LOGGER.error("Could not connect to Kostal Piko api: %s", err)
                 errors[CONF_HOST] = "cannot_connect"
             except Exception as err:
-                _LOGGER.error(
-                    "Unknown error: %s", err)
+                _LOGGER.error("Unknown error: %s", err)
                 errors[CONF_BASE] = "unknown"
 
             if not errors:

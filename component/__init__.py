@@ -1,6 +1,7 @@
 """Kostal Piko custom component."""
 import logging
 from datetime import timedelta
+import logging
 from typing import Dict
 
 from homeassistant.const import (
@@ -12,10 +13,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
-from kostal import Piko, const as PikoConst
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["sensor"]
