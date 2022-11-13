@@ -7,7 +7,7 @@ Home Assistant Component for Kostal Piko Inverters.
 
 - [ ] Handle authentication errors in config flow with appropiate message
 - [ ] Test config flow
-- [ ] Translate config flow (at least to german, because thats what I know)
+- [x] Translate config flow (at least to german, because thats what I know)
 
 ## Acknowledgements
 

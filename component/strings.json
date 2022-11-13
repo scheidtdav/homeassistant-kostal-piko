@@ -1,7 +1,11 @@
 {
   "config": {
+    "error": {
+      "unknown": "An unknown error occured",
+      "cannot_connect": "Could not connect to inverter"
+    },
     "step": {
-      "init": {
+      "user": {
         "data": {
           "host": "[%key:common::config_flow::data::host%]",
           "username": "[%key:common::config_flow::data::username%]",
