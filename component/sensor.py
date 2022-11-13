@@ -1,6 +1,8 @@
 """Kostal Piko sensors."""
 import logging
+from . import PikoUpdateCoordinator
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.components.switch import SensorEntity
@@ -12,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ):
     """Set up the Kostal Piko platform with its sensors"""
     coordinator = hass.data[DOMAIN][entry.entry_id]
@@ -21,7 +23,7 @@ async def async_setup_entry(
         for description in SENSOR_TYPES)
 
 
-class KostalPikoSensor(CoordinatorEntity, SensorEntity):
+class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
     """A Kostal Piko sensor updated using a DataUpdateCoordinator."""
 
     def __init__(self, coordinator, description):
@@ -52,3 +54,9 @@ class KostalPikoSensor(CoordinatorEntity, SensorEntity):
     def unique_id(self) -> str:
         """Return the unique id of this Sensor Entity."""
         return f"{self.piko_const_name}_{self.piko_const_value}_{vars(PikoConst)[self.piko_const_name][self.piko_const_value]}"
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        self._attr_native_value = self.coordinator.data[self.dxs_id]
+        self.async_write_ha_state()

@@ -8,6 +8,8 @@ Home Assistant Component for Kostal Piko Inverters.
 - [ ] Handle authentication errors in config flow with appropiate message
 - [ ] Test config flow
 - [x] Translate config flow (at least to german, because thats what I know)
+- [ ] Implement update coordinators `async_config_entry_first_refresh`
+- [ ] Add all possible sensors in the const `SENSOR_TYPES`
 
 ## Acknowledgements
 
