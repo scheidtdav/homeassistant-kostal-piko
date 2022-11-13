@@ -3,6 +3,12 @@
 Home Assistant Component for Kostal Piko Inverters.
 **As of October 2021 this is work in progress with the goal to have this implemented in [Home Assistant Core](https://github.com/home-assistant/core).**
 
+## TODOs
+
+- [ ] Handle authentication errors in config flow with appropiate message
+- [ ] Test config flow
+- [ ] Translate config flow (at least to german, because thats what I know)
+
 ## Acknowledgements
 
 Thanks to everyone creating open source software and special thanks to all the people contributing to [Home Assistant](www.home-assistant.io), making it as awesome as it is.

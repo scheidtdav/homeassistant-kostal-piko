@@ -13,25 +13,38 @@ _LOGGER = logging.getLogger(__name__)
 
 # TODO add tests to be accepted to into core
 
+SETUP_SCHEMA = vol.Schema({
+            vol.Required("host"): str,
+            vol.Required("username"): str,
+            vol.Required("password"): str,
+        })
 
-class PikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+async def test_connection(hass: HomeAssistant, data) -> str:
+    """Tests the connection to the inverter and returns its name"""
+    session = async_get_clientsession(hass)
+    inverter = kostal.Piko(
+        session, data["host"], data["username"], data["password"])
+    # TODO replace the serial number with the inverter name once implemented in pykostal
+    res = await inverter._Piko__fetch_dxs_entry(kostal.const.InfoVersions["SerialNumber"])
+    return f"Kostal Piko Inverter {res.value}"
+
+class KostalPikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle the config flow for the Kostal Piko inverter."""
 
     VERSION = 1
 
     async def async_step_user(self, user_input=None):
-        """Handle the initial step asking for host, username and password."""
+        """Handle the user initiating the flow via the user interface. 
+        Will ask for host, username and password."""
         errors = {}
-
-        data_schema = {
-            vol.Required("host"): str,
-            vol.Required("username"): str,
-            vol.Required("password"): str,
-        }
 
         if user_input is not None:
             try:
                 inverter_name = await test_connection(self.hass, user_input)
+            # TODO handle auth error with correct message
+            # except SOMEERROR as err:
+            # _LOGGER.error(...)
+            # errors[CONF_BASE] = "auth"
             except ValueError as err:
                 _LOGGER.error(
                     "Kostal Piko api returned unknown value: %s", err)
@@ -48,14 +61,4 @@ class PikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if not errors:
                 return self.async_create_entry(title=inverter_name, data=user_input)
 
-        return self.async_show_form(step_id="init", data_schema=vol.Schema(data_schema), errors=errors)
-
-
-async def test_connection(hass: HomeAssistant, data) -> str:
-    """Tests the connection to the inverter and returns its name"""
-    session = async_get_clientsession(hass)
-    inverter = kostal.Piko(
-        session, data["host"], data["username"], data["password"])
-    # TODO replace the serial number with the inverter name once implemented in pykostal
-    res = await inverter._Piko__fetch_dxs_entry(kostal.const.InfoVersions["SerialNumber"])
-    return f"Kostal Piko Inverter {res.value}"
+        return self.async_show_form(step_id="user", data_schema=SETUP_SCHEMA, errors=errors)
