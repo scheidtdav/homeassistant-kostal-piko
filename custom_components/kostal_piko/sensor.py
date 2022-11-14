@@ -1,20 +1,17 @@
 """Kostal Piko sensors."""
 import logging
-from . import PikoUpdateCoordinator
+import kostal
+
 from homeassistant.core import HomeAssistant
+from homeassistant.const import CONF_HOST
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.components.switch import SensorEntity
+from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.components.sensor import SensorEntity
 
-# from kostal import const as PikoConst
-import kostal
-
-from homeassistant.components.sensor import ATTR_STATE_CLASS, SensorEntity
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
-
+from . import PikoUpdateCoordinator
 from .const import (
     SENSOR_TYPES,
     DOMAIN
@@ -22,14 +19,24 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
-
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ):
     """Set up the Kostal Piko platform with its sensors"""
     coordinator = hass.data[DOMAIN][entry.entry_id]
+
+    device_info = DeviceInfo(
+        configuration_url=entry.data[CONF_HOST],
+        identifiers={(DOMAIN, coordinator.data[kostal.InfoVersions.SERIAL_NUMBER])},
+        manufacturer="Kostal",
+        model=coordinator.data[kostal.InfoVersions.ARTICLE_NUMBER],
+        default_name=coordinator.data[kostal.InfoVersions.ARTICLE_NUMBER],
+        sw_version=coordinator.data[kostal.InfoVersions.VERSION_FW],
+        hw_version=coordinator.data[kostal.InfoVersions.VERSION_HW]
+    )
+
     async_add_entities(
-        KostalPikoSensor(coordinator, description) for description in SENSOR_TYPES
+        KostalPikoSensor(coordinator, description, device_info) for description in SENSOR_TYPES
     )
     return True
 
@@ -37,9 +44,13 @@ async def async_setup_entry(
 class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
     """A Kostal Piko sensor updated using a DataUpdateCoordinator."""
 
-    def __init__(self, coordinator, description):
+    def __init__(self, coordinator, description, deviceInfo):
         """Create a new KostalPikoSensor entity for inverter data."""
         super().__init__(coordinator)
+        self.dxs_id = description.key
+        self._attr_device_info = deviceInfo
+        self._attr_native_value = self.coordinator.data[self.dxs_id]
+        self._attr_unique_id = f"{coordinator.data[kostal.InfoVersions.SERIAL_NUMBER]}_{description.key}"
         self.entity_description = description
 
     async def async_added_to_hass(self) -> None:
@@ -60,11 +71,6 @@ class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
             and self.coordinator.data is not None
             and self.dxs_id in self.coordinator.data
         )
-
-    @property
-    def unique_id(self) -> str:
-        """Return the unique id of this Sensor Entity."""
-        return f"{self.piko_const_name}_{self.piko_const_value}_{vars(PikoConst)[self.piko_const_name][self.piko_const_value]}"
 
     @callback
     def _handle_coordinator_update(self) -> None:

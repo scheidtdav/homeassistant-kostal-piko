@@ -1,7 +1,6 @@
 """Kostal Piko custom component."""
 import logging
 from datetime import timedelta
-import logging
 from typing import Dict
 
 from homeassistant.const import (
@@ -15,9 +14,11 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN
+from kostal import InfoVersions
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["sensor"]
+DEVICE_INFO_IDS = [InfoVersions.SERIAL_NUMBER, InfoVersions.ARTICLE_NUMBER, InfoVersions.VERSION_FW, InfoVersions.VERISON_HW]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Kostal Piko from a config entry."""
@@ -74,16 +75,16 @@ class PikoUpdateCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self) -> Dict[int, str]:
         """Fetch data from API endpoint."""
-        if not self._fetch:
-            return {}
+        to_fetch = self._fetch
+        to_fetch.extend(DEVICE_INFO_IDS)
 
         try:
-            data = await self.piko.fetch_props(self._fetch)
+            fetched = await self.piko.fetch_props(to_fetch)
             return {
                 dxs_id: {
                     v.value
                 }
-                for dxs_id, v in data
+                for dxs_id, v in fetched
             }
         except Exception as err:
             raise UpdateFailed(err) from err
