@@ -3,11 +3,7 @@ import logging
 from datetime import timedelta
 from typing import Dict
 
-from homeassistant.const import (
-    CONF_HOST,
-    CONF_PASSWORD,
-    CONF_USERNAME
-)
+from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -18,7 +14,13 @@ from kostal import InfoVersions
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["sensor"]
-DEVICE_INFO_IDS = [InfoVersions.SERIAL_NUMBER, InfoVersions.ARTICLE_NUMBER, InfoVersions.VERSION_FW, InfoVersions.VERISON_HW]
+DEVICE_INFO_IDS = [
+    InfoVersions.SERIAL_NUMBER,
+    InfoVersions.ARTICLE_NUMBER,
+    InfoVersions.VERSION_FW,
+    InfoVersions.VERISON_HW,
+]
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Kostal Piko from a config entry."""
@@ -32,12 +34,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         raise ConfigEntryNotReady from err
 
     coordinator = PikoUpdateCoordinator(hass, piko)
-    await coordinator.async_config_entry_first_refresh()    
+    await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = coordinator
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-    
+
     return True
 
 
@@ -48,22 +50,23 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(entry.entry_id)
         if not hass.data[DOMAIN]:
             hass.data.pop(DOMAIN)
-    return 
+    return
+
 
 class PikoUpdateCoordinator(DataUpdateCoordinator):
     """Get the latest data from the Kostal Piko Inverter."""
 
-    def __init__(self, hass: HomeAssistant, piko: Piko, update_interval = timedelta(seconds=1)) -> None:
+    def __init__(
+        self, hass: HomeAssistant, piko: Piko, update_interval=timedelta(seconds=1)
+    ) -> None:
         """Initialize the coordinator."""
         self.hass = hass
         self.piko: Piko = piko
         self._fetch = list()
 
         super().__init__(
-            self.hass,
-            _LOGGER,
-            name=DOMAIN,
-            update_interval=update_interval)
+            self.hass, _LOGGER, name=DOMAIN, update_interval=update_interval
+        )
 
     def start_fetch_data(self, dxs_id: int) -> None:
         """Adds the given dxs_id to the data that is being fetched."""
@@ -80,11 +83,6 @@ class PikoUpdateCoordinator(DataUpdateCoordinator):
 
         try:
             fetched = await self.piko.fetch_props(to_fetch)
-            return {
-                dxs_id: {
-                    v.value
-                }
-                for dxs_id, v in fetched
-            }
+            return {dxs_id: {v.value} for dxs_id, v in fetched}
         except Exception as err:
             raise UpdateFailed(err) from err

@@ -12,12 +12,10 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.components.sensor import SensorEntity
 
 from . import PikoUpdateCoordinator
-from .const import (
-    SENSOR_TYPES,
-    DOMAIN
-)
+from .const import SENSOR_TYPES, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
+
 
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
@@ -32,11 +30,12 @@ async def async_setup_entry(
         model=coordinator.data[kostal.InfoVersions.ARTICLE_NUMBER],
         default_name=coordinator.data[kostal.InfoVersions.ARTICLE_NUMBER],
         sw_version=coordinator.data[kostal.InfoVersions.VERSION_FW],
-        hw_version=coordinator.data[kostal.InfoVersions.VERSION_HW]
+        hw_version=coordinator.data[kostal.InfoVersions.VERSION_HW],
     )
 
     async_add_entities(
-        KostalPikoSensor(coordinator, description, device_info) for description in SENSOR_TYPES
+        KostalPikoSensor(coordinator, description, device_info)
+        for description in SENSOR_TYPES
     )
     return True
 
@@ -50,7 +49,9 @@ class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
         self.dxs_id = description.key
         self._attr_device_info = deviceInfo
         self._attr_native_value = self.coordinator.data[self.dxs_id]
-        self._attr_unique_id = f"{coordinator.data[kostal.InfoVersions.SERIAL_NUMBER]}_{description.key}"
+        self._attr_unique_id = (
+            f"{coordinator.data[kostal.InfoVersions.SERIAL_NUMBER]}_{description.key}"
+        )
         self.entity_description = description
 
     async def async_added_to_hass(self) -> None:
