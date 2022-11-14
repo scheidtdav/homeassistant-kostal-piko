@@ -28,10 +28,8 @@ CONDITION_MAP_BATTERY_STATUS = {0: "Charging", 1: "Discharging"}
 CONDITION_MAP_INVERTER_STATUS = {0: "", 1: "", 2: "Starting", 3: "Feed-In"}
 
 # Defines all possible sensors
-# TODO Add all sensors the pykostal library offers
-
-# Actual Analog Inputs
-ACTUAL_ANALOG_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
+SENSOR_TYPES = tuple[SensorEntityDescription, ...] = (
+    # Analog Input sensors
     SensorEntityDescription(
         key="167772417",
         name="Analog Input 1",
@@ -56,9 +54,7 @@ ACTUAL_ANALOG_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         native_unit_of_measurement=ELECTRIC_POTENTIAL_VOLT,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
-)
-
-ACTUAL_BATTERY_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
+    # Battery sensors
     SensorEntityDescription(
         key="33556226",
         name="Battery Voltage",
@@ -94,9 +90,7 @@ ACTUAL_BATTERY_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         native_unit_of_measurement=TEMP_CELSIUS,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
-)
-
-ACTUAL_GRID_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
+    # Grid sensors
     SensorEntityDescription(
         key="67109120",
         name="Output Power",
@@ -174,9 +168,7 @@ ACTUAL_GRID_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         native_unit_of_measurement=POWER_WATT,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
-)
-
-ACTUAL_HOUSE_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
+    # Home sensors
     SensorEntityDescription(
         key="83886336",
         name="Home Consumption Solar",
@@ -213,9 +205,36 @@ ACTUAL_HOUSE_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         native_unit_of_measurement=POWER_WATT,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
-)
-
-ACTUAL_PVGENERATOR_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
+    SensorEntityDescription(
+        key="33556736",
+        name="DC Power PV",
+        native_unit_of_measurement=POWER_WATT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="67109120",
+        name="AC Power",
+        native_unit_of_measurement=POWER_WATT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="83888128",
+        name="Self Consumption",
+        native_unit_of_measurement=POWER_WATT,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="33556229",
+        name="Battery State of Charge",
+        native_unit_of_measurement=ATTR_BATTERY_LEVEL,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="16780032",
+        name="Operating Status",
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    # PVGenerator sensors
     SensorEntityDescription(
         key="33555202",
         name="DC 1 Voltage",
@@ -270,9 +289,7 @@ ACTUAL_PVGENERATOR_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         native_unit_of_measurement=POWER_WATT,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
-)
-
-ACTUAL_SZEROIN_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
+    # S0 sensors
     SensorEntityDescription(
         key="184549632",
         name="S0 in Pulses",
@@ -284,168 +301,127 @@ ACTUAL_SZEROIN_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         native_unit_of_measurement=TIME_SECONDS,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
-)
-
-HOME_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
-    SensorEntityDescription(
-        key="33556736",
-        name="DC Power PV",
-        native_unit_of_measurement=POWER_WATT,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="67109120",
-        name="AC Power",
-        native_unit_of_measurement=POWER_WATT,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="83888128",
-        name="Self Consumption",
-        native_unit_of_measurement=POWER_WATT,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="33556229",
-        name="Battery State of Charge",
-        native_unit_of_measurement=ATTR_BATTERY_LEVEL,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16780032",
-        name="Operating Status",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-)
-
-INFO_VERSIONS_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
-    SensorEntityDescription(
-        key="16779267",
-        name="Version UI",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16779265",
-        name="Version FW",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16779266",
-        name="Version HW",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16779268",
-        name="Version PAR",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16777728",
-        name="Serial Number",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16777472",
-        name="Article Number",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16779522",
-        name="Country Settings Name",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16779521",
-        name="Country Settings Version",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-)
-
-INFO_INVERTER_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
-    SensorEntityDescription(
-        key="16780288",
-        name="Unknown",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16777984",
-        name="Inverter Name",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    SensorEntityDescription(
-        key="16780544",
-        name="Inverter Type",
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-)
-
-STATISTIC_DAY_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
+    # Device Information sensors
+    # SensorEntityDescription(
+    #     key="16779267",
+    #     name="Version UI",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16779265",
+    #     name="Version FW",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16779266",
+    #     name="Version HW",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16779268",
+    #     name="Version PAR",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16777728",
+    #     name="Serial Number",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16777472",
+    #     name="Article Number",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16779522",
+    #     name="Country Settings Name",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16779521",
+    #     name="Country Settings Version",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16780288",
+    #     name="Unknown",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16777984",
+    #     name="Inverter Name",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # SensorEntityDescription(
+    #     key="16780544",
+    #     name="Inverter Type",
+    #     state_class=STATE_CLASS_MEASUREMENT,
+    # ),
+    # Daily statistics sensors
     SensorEntityDescription(
         key="251658754",
-        name="Yield",
+        name="Daily Yield",
         native_unit_of_measurement=ENERGY_WATT_HOUR,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     SensorEntityDescription(
         key="251659010",
-        name="Home Consumption",
+        name="Daily Home Consumption",
         native_unit_of_measurement=ENERGY_WATT_HOUR,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     SensorEntityDescription(
         key="251659266",
-        name="Self Consumption",
+        name="Daily Self Consumption",
         native_unit_of_measurement=ENERGY_WATT_HOUR,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     SensorEntityDescription(
         key="251659278",
-        name="Self Consumption Rate",
+        name="Daily Self Consumption Rate",
         native_unit_of_measurement=PERCENTAGE,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     SensorEntityDescription(
         key="251659279",
-        name="Autonomy Degree",
+        name="Daily Autonomy Degree",
         native_unit_of_measurement=PERCENTAGE,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
-)
-
-STATISTIC_TOTAL_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
+    # Total statistics sensors
     SensorEntityDescription(
         key="251658753",
-        name="Yield",
+        name="Total Yield",
         native_unit_of_measurement=ENERGY_WATT_HOUR,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     SensorEntityDescription(
         key="251658753",
-        name="Operating Time",
+        name="Total Operating Time",
         native_unit_of_measurement=TIME_HOURS,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     SensorEntityDescription(
         key="251659009",
-        name="Home Consumption",
+        name="Total Home Consumption",
         native_unit_of_measurement=ENERGY_WATT_HOUR,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     SensorEntityDescription(
         key="251659265",
-        name="Self Consumption",
+        name="Total Self Consumption",
         native_unit_of_measurement=ENERGY_WATT_HOUR,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     SensorEntityDescription(
         key="251659280",
-        name="Self Consumption Rate",
+        name="Total Self Consumption Rate",
         native_unit_of_measurement=PERCENTAGE,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     SensorEntityDescription(
         key="251659281",
-        name="Autonomy Degree",
+        name="Total Autonomy Degree",
         native_unit_of_measurement=PERCENTAGE,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
