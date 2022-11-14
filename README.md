@@ -9,7 +9,7 @@ Home Assistant Component for Kostal Piko Inverters.
 - [ ] Test config flow
 - [x] Translate config flow (at least to german, because thats what I know)
 - [ ] Implement update coordinators `async_config_entry_first_refresh`
-- [ ] Add all possible sensors in the const `SENSOR_TYPES`
+- [x] Add all possible sensors in the const `SENSOR_TYPES`
 - [ ] Implement device info in sensors.py `async_setup_entry`
 
 ## Acknowledgements
