@@ -3,14 +3,14 @@ import logging
 from datetime import timedelta
 from typing import Dict
 
-from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from kostal import InfoVersions
 
 from .const import DOMAIN
-from kostal import InfoVersions
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["sensor"]

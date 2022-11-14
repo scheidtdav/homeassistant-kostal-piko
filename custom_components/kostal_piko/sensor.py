@@ -1,18 +1,18 @@
 """Kostal Piko sensors."""
 import logging
-import kostal
 
-from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_HOST
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.components.switch import SensorEntity
-from homeassistant.helpers.entity import DeviceInfo
+import kostal
 from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.switch import SensorEntity
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_HOST
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import PikoUpdateCoordinator
-from .const import SENSOR_TYPES, DOMAIN
+from .const import DOMAIN, SENSOR_TYPES
 
 _LOGGER = logging.getLogger(__name__)
 
