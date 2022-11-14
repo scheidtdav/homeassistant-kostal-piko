@@ -12,6 +12,7 @@ Home Assistant Component for Kostal Piko Inverters.
 - [x] Add all possible sensors in the const `SENSOR_TYPES`
 - [x] Implement device info in sensors.py `async_setup_entry`
 - [ ] Replace magic numbers of sensor entities with const from pykostal
+- [ ] Add integration to [home-assistant/brands](https://github.com/home-assistant/brands)
 
 ## Acknowledgements
 
