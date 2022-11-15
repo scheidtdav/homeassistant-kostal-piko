@@ -5,15 +5,17 @@ Home Assistant Component for Kostal Piko Inverters.
 
 ## TODOs
 
-- [ ] Handle authentication errors in config flow with appropiate message
-- [ ] Test config flow
+- [x] Handle authentication errors in config flow with appropiate message
+- [x] Test config flow
 - [x] Translate config flow (at least to german, because thats what I know)
 - [ ] ~~Implement update coordinators `async_config_entry_first_refresh`~~ Turns out there is no need...
 - [x] Add all possible sensors in the const `SENSOR_TYPES`
 - [x] Implement device info in sensors.py `async_setup_entry`
-- [ ] Replace magic numbers of sensor entities with const from pykostal
+- [x] Replace magic numbers of sensor entities with const from pykostal
 - [ ] Add integration to [home-assistant/brands](https://github.com/home-assistant/brands)
-- [ ] Implement connection test properly
+- [x] Implement connection test properly
+- [x] Abort config flow if necessary
+- [ ] Inverter Name and Make for config entry
 
 ## Acknowledgements
 

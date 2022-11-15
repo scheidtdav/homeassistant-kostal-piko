@@ -1,16 +1,13 @@
 """Kostal Piko sensors."""
 import logging
-
 import kostal
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.components.switch import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-
 from . import PikoUpdateCoordinator
 from .const import DOMAIN, SENSOR_TYPES
 
@@ -19,7 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
-):
+) -> None:
     """Set up the Kostal Piko platform with its sensors"""
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
@@ -37,7 +34,6 @@ async def async_setup_entry(
         KostalPikoSensor(coordinator, description, device_info)
         for description in SENSOR_TYPES
     )
-    return True
 
 
 class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
@@ -48,11 +44,15 @@ class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
         super().__init__(coordinator)
         self.dxs_id = description.key
         self._attr_device_info = deviceInfo
-        self._attr_native_value = self.coordinator.data[self.dxs_id]
         self._attr_unique_id = (
             f"{coordinator.data[kostal.InfoVersions.SERIAL_NUMBER]}_{description.key}"
         )
         self.entity_description = description
+        self._attr_native_value = (
+            self.coordinator.data[self.dxs_id]
+            if self.dxs_id in self.coordinator.data
+            else None
+        )
 
     async def async_added_to_hass(self) -> None:
         """Register this entity on the Update Coordinator."""
@@ -76,5 +76,9 @@ class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        self._attr_native_value = self.coordinator.data[self.dxs_id]
+        self._attr_native_value = (
+            self.coordinator.data[self.dxs_id]
+            if self.dxs_id in self.coordinator.data
+            else None
+        )
         self.async_write_ha_state()

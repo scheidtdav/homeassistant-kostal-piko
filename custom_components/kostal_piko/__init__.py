@@ -1,15 +1,13 @@
 """Kostal Piko custom component."""
-import logging
 from datetime import timedelta
-from typing import Dict
-
+import logging
+from kostal import InfoVersions, Piko
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
+from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from kostal import InfoVersions
-
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -18,7 +16,7 @@ DEVICE_INFO_IDS = [
     InfoVersions.SERIAL_NUMBER,
     InfoVersions.ARTICLE_NUMBER,
     InfoVersions.VERSION_FW,
-    InfoVersions.VERISON_HW,
+    InfoVersions.VERSION_HW,
 ]
 
 
@@ -76,13 +74,15 @@ class PikoUpdateCoordinator(DataUpdateCoordinator):
         """Removes the given dxs_id from the data that is being fetched."""
         self._fetch.remove(dxs_id)
 
-    async def _async_update_data(self) -> Dict[int, str]:
+    async def _async_update_data(self) -> dict[int, str]:
         """Fetch data from API endpoint."""
         to_fetch = self._fetch
         to_fetch.extend(DEVICE_INFO_IDS)
 
         try:
-            fetched = await self.piko.fetch_props(to_fetch)
-            return {dxs_id: {v.value} for dxs_id, v in fetched}
+            fetched = await self.piko.fetch_props(*to_fetch)
+            return {
+                dxs_id: fetched.get_entry_by_id(dxs_id).value for dxs_id in to_fetch
+            }
         except Exception as err:
             raise UpdateFailed(err) from err

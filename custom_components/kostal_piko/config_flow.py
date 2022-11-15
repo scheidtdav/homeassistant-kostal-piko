@@ -1,17 +1,18 @@
+"""Config flow for Kostal Piko solar inverters."""
 import logging
 
+import kostal
 import voluptuous as vol
+
 from homeassistant import config_entries
 from homeassistant.const import CONF_BASE, CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
+from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from kostal import Piko
 
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
-
-# TODO add tests to be accepted to into core
 
 SETUP_SCHEMA = vol.Schema(
     {
@@ -24,15 +25,16 @@ SETUP_SCHEMA = vol.Schema(
 )
 
 
-async def test_connection(hass: HomeAssistant, data) -> str:
+async def test_connection(hass: HomeAssistant, data) -> tuple[str, str]:
     """Tests the connection to the inverter and returns its name"""
     session = async_get_clientsession(hass)
     inverter = kostal.Piko(session, data["host"], data["username"], data["password"])
-    # TODO replace the serial number with the inverter name once implemented in pykostal
-    res = await inverter._Piko__fetch_dxs_entry(
-        kostal.const.InfoVersions["SerialNumber"]
+    res = await inverter.fetch_props(
+        kostal.InfoVersions.ARTICLE_NUMBER, kostal.InfoVersions.SERIAL_NUMBER
     )
-    return f"Kostal Piko Inverter {res.value}"
+    serial = res.get_entry_by_id(kostal.InfoVersions.SERIAL_NUMBER).value
+    article = res.get_entry_by_id(kostal.InfoVersions.ARTICLE_NUMBER).value
+    return (article, serial)
 
 
 class KostalPikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -40,30 +42,31 @@ class KostalPikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(self, user_input=None) -> FlowResult:
         """Handle the user initiating the flow via the user interface.
         Will ask for host, username and password."""
         errors = {}
 
         if user_input is not None:
             try:
-                inverter_name = await test_connection(self.hass, user_input)
-            # TODO handle auth error with correct message
-            # except SOMEERROR as err:
-            # _LOGGER.error(...)
-            # errors[CONF_BASE] = "auth"
+                article, serial = await test_connection(self.hass, user_input)
+                await self.async_set_unique_id(serial)
+                self._abort_if_unique_id_configured()
+
             except ValueError as err:
                 _LOGGER.error("Kostal Piko api returned unknown value: %s", err)
                 errors[CONF_BASE] = "unknown"
             except ConnectionError as err:
                 _LOGGER.error("Could not connect to Kostal Piko api: %s", err)
                 errors[CONF_HOST] = "cannot_connect"
-            except Exception as err:
-                _LOGGER.error("Unknown error: %s", err)
+            except Exception as err:  # pylint: disable=broad-except
+                _LOGGER.exception("Unexpected exception: %s", err)
                 errors[CONF_BASE] = "unknown"
 
             if not errors:
-                return self.async_create_entry(title=inverter_name, data=user_input)
+                return self.async_create_entry(
+                    title=f"Piko {article} ({serial})", data=user_input
+                )
 
         return self.async_show_form(
             step_id="user", data_schema=SETUP_SCHEMA, errors=errors
