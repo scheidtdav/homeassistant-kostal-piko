@@ -22,7 +22,12 @@ DOMAIN = "kostal_piko"
 
 CONDITION_MAP_BATTERY_STATUS = {0: "Charging", 1: "Discharging"}
 
-CONDITION_MAP_INVERTER_STATUS = {0: "", 1: "", 2: "Starting", 3: "Feed-In"}
+CONDITION_MAP_INVERTER_STATUS = {
+    0: "Unknown",
+    1: "Unknown",
+    2: "Starting",
+    3: "Feed-In",
+}
 
 # Defines all possible sensors
 SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
@@ -81,11 +86,13 @@ SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         key=str(kostal.ActualBattery.CURRENT_DIR),
         name="Battery Current Direction",
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:plus-minus",
     ),
     SensorEntityDescription(
         key=str(kostal.ActualBattery.CHARGE_CYCLES),
         name="Battery Charge Cycles",
         state_class=SensorStateClass.TOTAL_INCREASING,
+        icon="mdi:tally-mark-5",
     ),
     SensorEntityDescription(
         device_class=SensorDeviceClass.TEMPERATURE,
@@ -121,6 +128,7 @@ SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         name="Limitation",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:car-speed-limiter",
     ),
     SensorEntityDescription(
         device_class=SensorDeviceClass.VOLTAGE,
@@ -246,6 +254,7 @@ SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         key=str(kostal.Home.OPERATING_STATUS),
         name="Operating Status",
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:state-machine",
     ),
     # PVGenerator sensors
     SensorEntityDescription(
@@ -316,12 +325,14 @@ SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         key=str(kostal.ActualSZeroIn.S0_IN_PULSE_COUNT),
         name="S0 in Pulses",
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:pulse",
     ),
     SensorEntityDescription(
         key=str(kostal.ActualSZeroIn.LOG_INTERVAL),
         name="Log Interval",
         native_unit_of_measurement=TIME_SECONDS,
         state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:timer",
     ),
     # Device Information sensors
     # SensorEntityDescription(
@@ -406,12 +417,14 @@ SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         name="Daily Self Consumption Rate",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.TOTAL,
+        icon="mdi:chart-donut",
     ),
     SensorEntityDescription(
         key=str(kostal.StatisticDay.AUTONOMY_DEGREE),
         name="Daily Autonomy Degree",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.TOTAL,
+        icon="mdi:transmission-tower-off",
     ),
     # Total statistics sensors
     SensorEntityDescription(
@@ -447,11 +460,13 @@ SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         name="Total Self Consumption Rate",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.TOTAL,
+        icon="mdi:chart-donut",
     ),
     SensorEntityDescription(
         key=str(kostal.StatisticTotal.AUTONOMY_DEGREE),
         name="Total Autonomy Degree",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.TOTAL,
+        icon="mdi:transmission-tower-off",
     ),
 )

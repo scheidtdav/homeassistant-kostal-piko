@@ -25,7 +25,7 @@ async def async_setup_entry(
         identifiers={(DOMAIN, coordinator.data[kostal.InfoVersions.SERIAL_NUMBER])},
         manufacturer="Kostal",
         model=coordinator.data[kostal.SettingsGeneral.INVERTER_MAKE],
-        default_name=coordinator.data[kostal.SettingsGeneral.INVERTER_NAME],
+        name=coordinator.data[kostal.SettingsGeneral.INVERTER_NAME],
         sw_version=coordinator.data[kostal.InfoVersions.VERSION_FW],
         hw_version=coordinator.data[kostal.InfoVersions.VERSION_HW],
     )
@@ -39,6 +39,8 @@ async def async_setup_entry(
 class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
     """A Kostal Piko sensor updated using a DataUpdateCoordinator."""
 
+    _attr_has_entity_name = True
+
     def __init__(self, coordinator, description, deviceInfo):
         """Create a new KostalPikoSensor entity for inverter data."""
         super().__init__(coordinator)
@@ -51,7 +53,7 @@ class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
         self._attr_native_value = (
             self.coordinator.data[self.dxs_id]
             if self.dxs_id in self.coordinator.data
-            else None
+            else self._attr_native_value
         )
 
     async def async_added_to_hass(self) -> None:
