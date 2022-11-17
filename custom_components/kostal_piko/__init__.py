@@ -9,6 +9,7 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from .const import DOMAIN
+from math import ceil
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["sensor"]
@@ -48,14 +49,14 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(entry.entry_id)
         if not hass.data[DOMAIN]:
             hass.data.pop(DOMAIN)
-    return
+    return unload_ok
 
 
 class PikoUpdateCoordinator(DataUpdateCoordinator):
     """Get the latest data from the Kostal Piko Inverter."""
 
     def __init__(
-        self, hass: HomeAssistant, piko: Piko, update_interval=timedelta(seconds=1)
+        self, hass: HomeAssistant, piko: Piko, update_interval=timedelta(seconds=15)
     ) -> None:
         """Initialize the coordinator."""
         self.hass = hass
@@ -68,21 +69,45 @@ class PikoUpdateCoordinator(DataUpdateCoordinator):
 
     def start_fetch_data(self, dxs_id: int) -> None:
         """Adds the given dxs_id to the data that is being fetched."""
-        self._fetch.append(dxs_id)
+        if dxs_id not in self._fetch:
+            self._fetch.append(dxs_id)
 
     def stop_fetch_data(self, dxs_id: int) -> None:
         """Removes the given dxs_id from the data that is being fetched."""
-        self._fetch.remove(dxs_id)
+        if dxs_id in self._fetch:
+            self._fetch.remove(dxs_id)
 
     async def _async_update_data(self) -> dict[int, str]:
         """Fetch data from API endpoint."""
-        to_fetch = self._fetch
+        to_fetch = []
+        to_fetch.extend(self._fetch)
         to_fetch.extend(DEVICE_INFO_IDS)
 
-        try:
-            fetched = await self.piko.fetch_props(*to_fetch)
-            return {
-                dxs_id: fetched.get_entry_by_id(dxs_id).value for dxs_id in to_fetch
-            }
-        except Exception as err:
-            raise UpdateFailed(err) from err
+        # The piko api apparently has an artificial limit of
+        # a maximum of 12 ids that can be request at a time.
+        # So we do multiple requests of 10.
+        segments_count = ceil(len(to_fetch) / 10)
+        return_data = {}
+        exception_count = 0
+        for i in range(0, segments_count):
+            fetch_segment = to_fetch[10 * i : 10 * (i + 1)]
+            try:
+                fetched = await self.piko.fetch_props(*fetch_segment)
+
+                for dxs_id in fetch_segment:
+                    dxs_entry = fetched.get_entry_by_id(dxs_id)
+                    if dxs_entry is not None:
+                        return_data[dxs_id] = dxs_entry.value
+            except Exception as err:  # pylint: disable=broad-except
+                _LOGGER.warning(
+                    "Fetching of segment %i failed, increasing exception count. Error message: %s",
+                    i,
+                    err,
+                    exc_info=True,
+                )
+                exception_count += 1
+
+        if len(return_data) == 0 and exception_count > 0:
+            raise UpdateFailed()
+        else:
+            return return_data
