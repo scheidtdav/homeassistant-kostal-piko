@@ -42,7 +42,7 @@ class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
     def __init__(self, coordinator, description, deviceInfo):
         """Create a new KostalPikoSensor entity for inverter data."""
         super().__init__(coordinator)
-        self.dxs_id = description.key
+        self.dxs_id = int(description.key)
         self._attr_device_info = deviceInfo
         self._attr_unique_id = (
             f"{coordinator.data[kostal.InfoVersions.SERIAL_NUMBER]}_{description.key}"
@@ -78,7 +78,8 @@ class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
         """Handle updated data from the coordinator."""
         self._attr_native_value = (
             self.coordinator.data[self.dxs_id]
-            if self.dxs_id in self.coordinator.data
-            else None
+            if self.coordinator.data is not None
+            and self.dxs_id in self.coordinator.data
+            else self._attr_native_value
         )
         self.async_write_ha_state()
