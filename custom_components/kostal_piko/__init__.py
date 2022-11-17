@@ -1,7 +1,7 @@
 """Kostal Piko custom component."""
 from datetime import timedelta
 import logging
-from kostal import InfoVersions, Piko
+from kostal import InfoVersions, SettingsGeneral, Piko
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
@@ -14,6 +14,8 @@ from math import ceil
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["sensor"]
 DEVICE_INFO_IDS = [
+    SettingsGeneral.INVERTER_NAME,
+    SettingsGeneral.INVERTER_MAKE,
     InfoVersions.SERIAL_NUMBER,
     InfoVersions.ARTICLE_NUMBER,
     InfoVersions.VERSION_FW,

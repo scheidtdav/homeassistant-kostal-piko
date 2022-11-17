@@ -25,16 +25,20 @@ SETUP_SCHEMA = vol.Schema(
 )
 
 
-async def test_connection(hass: HomeAssistant, data) -> tuple[str, str]:
+async def test_connection(hass: HomeAssistant, data) -> tuple[str, str, str]:
     """Tests the connection to the inverter and returns its name"""
     session = async_get_clientsession(hass)
     inverter = kostal.Piko(session, data["host"], data["username"], data["password"])
     res = await inverter.fetch_props(
-        kostal.InfoVersions.ARTICLE_NUMBER, kostal.InfoVersions.SERIAL_NUMBER
+        kostal.SettingsGeneral.INVERTER_NAME,
+        kostal.SettingsGeneral.INVERTER_MAKE,
+        kostal.InfoVersions.SERIAL_NUMBER,
     )
+    name = res.get_entry_by_id(kostal.SettingsGeneral.INVERTER_NAME).value
+    make = res.get_entry_by_id(kostal.SettingsGeneral.INVERTER_MAKE).value
     serial = res.get_entry_by_id(kostal.InfoVersions.SERIAL_NUMBER).value
-    article = res.get_entry_by_id(kostal.InfoVersions.ARTICLE_NUMBER).value
-    return (article, serial)
+
+    return (name, make, serial)
 
 
 class KostalPikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -49,7 +53,7 @@ class KostalPikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             try:
-                article, serial = await test_connection(self.hass, user_input)
+                name, make, serial = await test_connection(self.hass, user_input)
                 await self.async_set_unique_id(serial)
                 self._abort_if_unique_id_configured()
 
@@ -65,7 +69,7 @@ class KostalPikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             if not errors:
                 return self.async_create_entry(
-                    title=f"Piko {article} ({serial})", data=user_input
+                    title=f"{make} {name} ({serial})", data=user_input
                 )
 
         return self.async_show_form(
