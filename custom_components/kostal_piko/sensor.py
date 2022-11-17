@@ -24,8 +24,8 @@ async def async_setup_entry(
         configuration_url=entry.data[CONF_HOST],
         identifiers={(DOMAIN, coordinator.data[kostal.InfoVersions.SERIAL_NUMBER])},
         manufacturer="Kostal",
-        model=coordinator.data[kostal.InfoVersions.ARTICLE_NUMBER],
-        default_name=coordinator.data[kostal.InfoVersions.ARTICLE_NUMBER],
+        model=coordinator.data[kostal.SettingsGeneral.INVERTER_MAKE],
+        default_name=coordinator.data[kostal.SettingsGeneral.INVERTER_NAME],
         sw_version=coordinator.data[kostal.InfoVersions.VERSION_FW],
         hw_version=coordinator.data[kostal.InfoVersions.VERSION_HW],
     )
