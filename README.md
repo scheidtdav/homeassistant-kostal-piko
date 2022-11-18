@@ -21,6 +21,7 @@ Home Assistant Component for Kostal Piko Inverters.
 - [x] Implement some special valued sensors (e.g. ones where status represented through number)
 - [ ] Fix translation of special states (such as charging/discharging)
 - [ ] Create documentation
+- [ ] Write tests for config flow (at least)
 
 ## Acknowledgements
 
