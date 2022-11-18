@@ -1,5 +1,7 @@
 # Home Assistant Kostal Piko
 
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+
 Home Assistant Component for Kostal Piko Inverters.
 **As of October 2021 this is work in progress with the goal to have this implemented in [Home Assistant Core](https://github.com/home-assistant/core).**
 
