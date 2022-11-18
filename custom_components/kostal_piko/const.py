@@ -1,9 +1,16 @@
 """Constants for the Kostal Piko integration."""
 from __future__ import annotations
+
+from collections.abc import Callable
+from dataclasses import dataclass
+from typing import Any
+
+import kostal
+
 from homeassistant.components.sensor import (
-    SensorStateClass,
     SensorDeviceClass,
     SensorEntityDescription,
+    SensorStateClass,
 )
 from homeassistant.const import (
     ELECTRIC_CURRENT_AMPERE,
@@ -18,9 +25,6 @@ from homeassistant.const import (
     TIME_SECONDS,
 )
 from homeassistant.helpers.typing import StateType
-from collections.abc import Callable
-from dataclasses import dataclass
-import kostal
 
 DOMAIN = "kostal_piko"
 
@@ -35,12 +39,12 @@ CONDITION_MAP_INVERTER_STATUS = {
 
 
 def round_one(val: int):
-    """Rounds the input value to one decimal."""
+    """Round the input value to one decimal."""
     return round(val, 1) if val is not None else val
 
 
 def round_two(val: int):
-    """Rounds the input value to two decimals."""
+    """Round the input value to two decimals."""
     return round(val, 2) if val is not None else val
 
 
@@ -48,7 +52,7 @@ def round_two(val: int):
 class KostalPikoEntityDescription(SensorEntityDescription):
     """A class that describes piko sensor entities."""
 
-    formatter: Callable[[any], StateType] | None = None
+    formatter: Callable[[Any], StateType] | None = None
 
 
 # Defines all possible sensors
@@ -112,9 +116,9 @@ SENSOR_TYPES: tuple[KostalPikoEntityDescription, ...] = (
         formatter=round_one,
     ),
     KostalPikoEntityDescription(
+        device_class="kostal_piko__battery_charging_state",
         key=str(kostal.ActualBattery.CURRENT_DIR),
         name="Battery Charging State",
-        state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:plus-minus",
         formatter=lambda b: CONDITION_MAP_BATTERY_STATUS[b]
         if b in CONDITION_MAP_BATTERY_STATUS
@@ -304,9 +308,9 @@ SENSOR_TYPES: tuple[KostalPikoEntityDescription, ...] = (
         formatter=round_one,
     ),
     KostalPikoEntityDescription(
+        device_class="kostal_piko__inverter_operating_state",
         key=str(kostal.Home.OPERATING_STATUS),
         name="Operating Status",
-        state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:state-machine",
         formatter=lambda s: CONDITION_MAP_INVERTER_STATUS[s]
         if s in CONDITION_MAP_INVERTER_STATUS

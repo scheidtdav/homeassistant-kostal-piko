@@ -1,15 +1,18 @@
 """Kostal Piko custom component."""
 from datetime import timedelta
 import logging
-from kostal import InfoVersions, SettingsGeneral, Piko
+from math import ceil
+
+from kostal import InfoVersions, Piko, SettingsGeneral
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+
 from .const import DOMAIN
-from math import ceil
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["sensor"]
@@ -63,19 +66,19 @@ class PikoUpdateCoordinator(DataUpdateCoordinator):
         """Initialize the coordinator."""
         self.hass = hass
         self.piko: Piko = piko
-        self._fetch = list()
+        self._fetch: list[int] = []
 
         super().__init__(
             self.hass, _LOGGER, name=DOMAIN, update_interval=update_interval
         )
 
     def start_fetch_data(self, dxs_id: int) -> None:
-        """Adds the given dxs_id to the data that is being fetched."""
+        """Add the given dxs_id to the data that is being fetched."""
         if dxs_id not in self._fetch:
             self._fetch.append(dxs_id)
 
     def stop_fetch_data(self, dxs_id: int) -> None:
-        """Removes the given dxs_id from the data that is being fetched."""
+        """Remove the given dxs_id from the data that is being fetched."""
         if dxs_id in self._fetch:
             self._fetch.remove(dxs_id)
 
@@ -111,5 +114,5 @@ class PikoUpdateCoordinator(DataUpdateCoordinator):
 
         if len(return_data) == 0 and exception_count > 0:
             raise UpdateFailed()
-        else:
-            return return_data
+
+        return return_data

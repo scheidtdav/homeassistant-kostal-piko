@@ -26,7 +26,7 @@ SETUP_SCHEMA = vol.Schema(
 
 
 async def test_connection(hass: HomeAssistant, data) -> tuple[str, str, str]:
-    """Tests the connection to the inverter and returns its name"""
+    """Tests the connection to the inverter and returns its name."""
     session = async_get_clientsession(hass)
     inverter = kostal.Piko(session, data["host"], data["username"], data["password"])
     res = await inverter.fetch_props(
@@ -47,8 +47,7 @@ class KostalPikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     async def async_step_user(self, user_input=None) -> FlowResult:
-        """Handle the user initiating the flow via the user interface.
-        Will ask for host, username and password."""
+        """Handle the user initiating the flow via the user interface."""
         errors = {}
 
         if user_input is not None:

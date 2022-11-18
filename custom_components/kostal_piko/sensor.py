@@ -1,6 +1,8 @@
 """Kostal Piko sensors."""
 import logging
+
 import kostal
+
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST
@@ -8,6 +10,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
 from . import PikoUpdateCoordinator
 from .const import DOMAIN, SENSOR_TYPES, KostalPikoEntityDescription
 
@@ -17,7 +20,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
-    """Set up the Kostal Piko platform with its sensors"""
+    """Set up the Kostal Piko platform with its sensors."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
     device_info = DeviceInfo(

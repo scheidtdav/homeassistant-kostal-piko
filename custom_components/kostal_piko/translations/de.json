@@ -1,30 +1,21 @@
 {
   "config": {
-    "flow_title": "Kostal Piko Inverter Setup",
+    "flow_title": "Kostal Piko Inverter Einrichtung",
+    "abort": {
+      "already_configured": "Ger\u00e4t ist schon konfiguriert."
+    },
     "error": {
-      "unknown": "An unknown error occured",
-      "cannot_connect": "Could not connect to inverter"
+      "unknown": "Ein unbekannter Fehler ist aufgetreten",
+      "cannot_connect": "Verbindung zum Inverter konnte nicht hergestellt werden"
     },
     "step": {
       "user": {
         "data": {
-          "host": "[%key:common::config_flow::data::host%]",
-          "username": "[%key:common::config_flow::data::username%]",
-          "password": "[%key:common::config_flow::data::password%]"
+          "host": "Host",
+          "username": "Benutzername",
+          "password": "Passwort"
         }
       }
-    },
-    "abort": {
-      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
-    }
-  },
-  "state": {
-    "_": {
-      "charging": "Charging",
-      "discharging": "Discharging",
-      "unknown": "Unknown",
-      "starting": "Starting",
-      "feed_in": "Feed-In"
     }
   }
 }
