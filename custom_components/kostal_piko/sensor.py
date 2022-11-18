@@ -9,7 +9,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from . import PikoUpdateCoordinator
-from .const import DOMAIN, SENSOR_TYPES
+from .const import DOMAIN, SENSOR_TYPES, KostalPikoEntityDescription
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,20 +41,21 @@ class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
 
     _attr_has_entity_name = True
 
-    def __init__(self, coordinator, description, deviceInfo):
+    def __init__(
+        self,
+        coordinator: PikoUpdateCoordinator,
+        description: KostalPikoEntityDescription,
+        deviceInfo: DeviceInfo,
+    ) -> None:
         """Create a new KostalPikoSensor entity for inverter data."""
         super().__init__(coordinator)
         self.dxs_id = int(description.key)
+        self.formatter = description.formatter
         self._attr_device_info = deviceInfo
         self._attr_unique_id = (
             f"{coordinator.data[kostal.InfoVersions.SERIAL_NUMBER]}_{description.key}"
         )
         self.entity_description = description
-        self._attr_native_value = (
-            self.coordinator.data[self.dxs_id]
-            if self.dxs_id in self.coordinator.data
-            else self._attr_native_value
-        )
 
     async def async_added_to_hass(self) -> None:
         """Register this entity on the Update Coordinator."""
@@ -78,10 +79,10 @@ class KostalPikoSensor(CoordinatorEntity[PikoUpdateCoordinator], SensorEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        self._attr_native_value = (
-            self.coordinator.data[self.dxs_id]
-            if self.coordinator.data is not None
-            and self.dxs_id in self.coordinator.data
-            else self._attr_native_value
-        )
-        self.async_write_ha_state()
+        if self.coordinator.data is not None and self.dxs_id in self.coordinator.data:
+            new_value = self.coordinator.data[self.dxs_id]
+            if self.formatter is not None:
+                self._attr_native_value = self.formatter(new_value)
+            else:
+                self._attr_native_value = new_value
+            self.async_write_ha_state()

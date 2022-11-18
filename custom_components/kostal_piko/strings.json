@@ -17,5 +17,14 @@
     "abort": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
     }
+  },
+  "state": {
+    "_": {
+      "charging": "Charging",
+      "discharging": "Discharging",
+      "unknown": "Unknown",
+      "starting": "Starting",
+      "feed_in": "Feed-In"
+    }
   }
 }
