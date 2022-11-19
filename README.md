@@ -3,25 +3,12 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
 Home Assistant Component for Kostal Piko Inverters.
-**As of October 2021 this is work in progress with the goal to have this implemented in [Home Assistant Core](https://github.com/home-assistant/core).**
+**As of November 2022 the work for an initial version is done. The goal is to have this implemented in [Home Assistant Core](https://github.com/home-assistant/core).**
 
-## TODOs
-
-- [x] Handle authentication errors in config flow with appropiate message
-- [x] Test config flow
-- [x] Translate config flow (at least to german, because thats what I know)
-- [ ] ~~Implement update coordinators `async_config_entry_first_refresh`~~ Turns out there is no need...
-- [x] Add all possible sensors in the const `SENSOR_TYPES`
-- [x] Implement device info in sensors.py `async_setup_entry`
-- [x] Replace magic numbers of sensor entities with const from pykostal
-- [ ] Add integration to [home-assistant/brands](https://github.com/home-assistant/brands)
-- [x] Implement connection test properly
-- [x] Abort config flow if necessary
-- [x] Inverter Name and Make for config entry
-- [x] Implement some special valued sensors (e.g. ones where status represented through number)
-- [x] Fix translation of special states (such as charging/discharging)
-- [ ] Create documentation
-- [x] Write tests for config flow (at least)
+Relevant pull requests:
+- https://github.com/home-assistant/brands/pull/3869
+- https://github.com/home-assistant/home-assistant.io/pull/25002
+- https://github.com/home-assistant/core/pull/82391
 
 ## Acknowledgements
 
