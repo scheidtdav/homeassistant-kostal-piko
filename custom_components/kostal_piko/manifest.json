@@ -8,5 +8,5 @@
   "issue_tracker": "https://github.com/scheidtdav/homeassistant-kostal-piko/issues",
   "iot_class": "local_polling",
   "requirements": ["pykostal==0.0.2"],
-  "version": "23.05.0"
+  "version": "23.05.1"
 }

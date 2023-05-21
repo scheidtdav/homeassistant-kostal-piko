@@ -12,7 +12,6 @@ The scheme is YY.0M.MICRO.
 
 ## Core Integration
 
-
 As of November 2022 the work for an initial version is done with the goal to have this implemented in [Home Assistant Core](https://github.com/home-assistant/core).
 
 Relevant pull requests:
