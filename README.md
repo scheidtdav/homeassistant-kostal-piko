@@ -1,6 +1,6 @@
 # Home Assistant Kostal Piko
 
-[![https://img.shields.io/github/release/scheidtdav/homeassistant-kostal-piko.svg?style=for-the-badge](https://github.com/scheidtdav/homeassistant-kostal-piko/releases)]
+[![release_badge](https://img.shields.io/github/release/scheidtdav/homeassistant-kostal-piko.svg?style=for-the-badge)](https://github.com/scheidtdav/homeassistant-kostal-piko/releases)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
 Home Assistant Component for Kostal Piko Inverters.
