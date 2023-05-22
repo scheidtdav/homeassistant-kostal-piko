@@ -1,9 +1,7 @@
 # Home Assistant Kostal Piko
 
-<div align="center">
 [![release_badge](https://img.shields.io/github/release/scheidtdav/homeassistant-kostal-piko.svg?style=for-the-badge)](https://github.com/scheidtdav/homeassistant-kostal-piko/releases)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
-</div>
 
 A custom Home Assistant integration for certain Kostal Piko solar inverters.
 
