@@ -17,9 +17,7 @@ _LOGGER = logging.getLogger(__name__)
 
 SETUP_SCHEMA = vol.Schema(
     {
-        vol.Required(
-            CONF_HOST, description={"suggested_value": "http://192.168.178.xyz"}
-        ): str,
+        vol.Required(CONF_HOST): str,
         vol.Required(CONF_USERNAME): str,
         vol.Required(CONF_PASSWORD): str,
     }
