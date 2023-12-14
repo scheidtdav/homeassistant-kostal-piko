@@ -30,8 +30,11 @@
       "kostal_piko_inverter_operating_state": {
         "state": {
           "unknown": "Unbekannt",
+          "off": "Aus",
+          "idle": "Leerlauf",
           "starting": "Startend",
-          "feed_in": "Einspeisung"
+          "feed_in": "Einspeisung (MPP)",
+          "feed_in_limited": "Einspeisung (abgeregelt)"
         }
       }
     }
