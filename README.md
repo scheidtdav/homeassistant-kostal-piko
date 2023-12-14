@@ -73,6 +73,8 @@ The recommended way is through [HACS](https://hacs.xyz).
 Add this repository as a custom repository by going to HACS > Integrations, click the three dots in the top right corner and select custom repositories. Insert the link to this repository and choose integration as the category.
 Once added, search for "Kostal Piko" and install the integration.
 
+After installing the integration, simply add it to your Home Assistant as you would any other integration using the UI.
+
 ## Contributing
 
 Any help is appreciated.
