@@ -29,10 +29,11 @@ DOMAIN = "kostal_piko"
 CONDITION_MAP_BATTERY_STATUS = {0: "charging", 1: "discharging"}
 
 CONDITION_MAP_INVERTER_STATUS = {
-    0: "unknown",
-    1: "unknown",
+    0: "off",
+    1: "idle",
     2: "starting",
     3: "feed_in",
+    4: "feed_in_limited"
 }
 
 
