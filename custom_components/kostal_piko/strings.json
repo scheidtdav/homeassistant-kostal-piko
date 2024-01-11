@@ -34,7 +34,9 @@
           "idle": "Idle",
           "starting": "Starting",
           "feed_in": "Feed-In (MPP)",
-          "feed_in_limited": "Feed-In (limited)"
+          "feed_in_limited": "Feed-In (limited)",
+          "insulation_measurement": "Insulation measurement",
+          "waiting_time": "Waiting time active"
         }
       }
     }

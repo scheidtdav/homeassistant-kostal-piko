@@ -33,7 +33,9 @@ CONDITION_MAP_INVERTER_STATUS = {
     1: "idle",
     2: "starting",
     3: "feed_in",
-    4: "feed_in_limited"
+    4: "feed_in_limited",
+    7: "insulation_measurement",
+    8: "waiting_time"
 }
 
 

@@ -34,7 +34,9 @@
           "idle": "Leerlauf",
           "starting": "Startend",
           "feed_in": "Einspeisung (MPP)",
-          "feed_in_limited": "Einspeisung (abgeregelt)"
+          "feed_in_limited": "Einspeisung (abgeregelt)",
+          "insulation_measurement": "Isolationsmessung",
+          "waiting_time": "Wartezeit aktiv"
         }
       }
     }
