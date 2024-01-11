@@ -15,7 +15,7 @@ It was tested with the following inverters:
 - Piko 5.5 running FW v05.50
 - Piko 5.5 running FW v05.61
 
-There are a number of sensors provided to Home Assistant. 
+There are a number of sensors provided by this integration to Home Assistant. 
 Due to limitations of the api of the inverter it is recommended to disable sensor entities that are not required.
 
 <details>
@@ -65,6 +65,10 @@ Due to limitations of the api of the inverter it is recommended to disable senso
   - Total operating time
 
 </details>
+
+The integration is known to **not work** with the following inverters and firmwares.
+For these it is recommended to try other custom integrations like [kostalpiko-homeassistant by rcasula](https://github.com/rcasula/kostalpiko-homeassistant), which uses a different api to talk to the inverter.
+- Piko 5.5 running FW v5.44
 
 ## Installation
 
