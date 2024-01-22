@@ -5,14 +5,17 @@
 
 A custom Home Assistant integration for certain Kostal Piko solar inverters.
 
+Note: The DCS series Piko inverters all seem to use a different API and will most likely not work with this integration.
+
 ---
 
 This integration provides Home Assistant with the data that can be obtained from the inverters built-in web portal.
 It was tested with the following inverters:
 - Piko 15 running FW v06.17 / UI v06.53
-- Piko 10 running FW v2.32
-- Piko 8.0 running FW v2.30 / UI v6.41
-- Piko 5.5 running FW v05.50
+- Piko 10 BA running FW v2.32
+- Piko 8.0 BA running FW v2.30 / UI v6.41
+- Piko 6.0 running FW v2.22
+- Piko 5.5 NG running FW v05.50
 - Piko 5.5 running FW v05.61
 
 There are a number of sensors provided by this integration to Home Assistant. 
@@ -68,7 +71,7 @@ Due to limitations of the api of the inverter it is recommended to disable senso
 
 The integration is known to **not work** with the following inverters and firmwares.
 For these it is recommended to try other custom integrations like [kostalpiko-homeassistant by rcasula](https://github.com/rcasula/kostalpiko-homeassistant), which uses a different api to talk to the inverter.
-- Piko 5.5 running FW v5.44
+- Piko 5.5 DCS running FW v5.44
 
 ## Installation
 
