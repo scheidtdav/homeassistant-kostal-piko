@@ -12,6 +12,7 @@ Note: The DCS series Piko inverters all seem to use a different API and will mos
 This integration provides Home Assistant with the data that can be obtained from the inverters built-in web portal.
 It was tested with the following inverters:
 - Piko 15 running FW v06.17 / UI v06.53
+- Piko 12 running FW v05.61
 - Piko 10 BA running FW v2.32
 - Piko 8.0 BA running FW v2.30 / UI v6.41
 - Piko 6.0 running FW v2.22
