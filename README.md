@@ -18,6 +18,7 @@ It was tested with the following inverters:
 - Piko 6.0 running FW v2.22
 - Piko 5.5 NG running FW v05.50
 - Piko 5.5 running FW v05.61
+- Piko 4.2 running FW v05.60 / UI v6.41
 
 There are a number of sensors provided by this integration to Home Assistant. 
 Due to limitations of the api of the inverter it is recommended to disable sensor entities that are not required.
@@ -92,15 +93,6 @@ Please leave feedback if you tested the integration with an inverter (or firmwar
 
 This integration uses [CalVer](https://calver.org/) for versioning.
 The scheme is YY.0M.MICRO.
-
-## Core Integration
-
-As of November 2022 the work for an initial version is done with the goal to have this implemented in [Home Assistant Core](https://github.com/home-assistant/core).
-
-Relevant pull requests:
-- https://github.com/home-assistant/brands/pull/3869
-- https://github.com/home-assistant/home-assistant.io/pull/25002
-- https://github.com/home-assistant/core/pull/82391
 
 ## Acknowledgements
 
