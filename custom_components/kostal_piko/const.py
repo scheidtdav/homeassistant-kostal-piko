@@ -1,4 +1,5 @@
 """Constants for the Kostal Piko integration."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -35,7 +36,7 @@ CONDITION_MAP_INVERTER_STATUS = {
     3: "feed_in",
     4: "feed_in_limited",
     7: "insulation_measurement",
-    8: "waiting_time"
+    8: "waiting_time",
 }
 
 

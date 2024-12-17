@@ -9,9 +9,14 @@
     "step": {
       "user": {
         "data": {
-          "host": "Host",
+          "host": "Host or IP",
           "username": "Username",
           "password": "Password"
+        },
+        "data_description": {
+          "host": "The hostname or IP address (including http:// or https://) of the inverter.",
+          "username": "The username used to log into the inverters webpage.",
+          "password": "The password used to log into the inverters webpage."
         }
       }
     },

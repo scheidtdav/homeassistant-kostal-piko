@@ -1,4 +1,5 @@
 """Config flow for Kostal Piko solar inverters."""
+
 import logging
 from typing import Any
 
@@ -28,8 +29,12 @@ async def test_connection(
     hass: HomeAssistant, data: dict[str, Any]
 ) -> tuple[str, str, str]:
     """Tests the connection to the inverter and returns its name."""
+    host = data["host"]
+    username = data["username"]
+    password = data["password"]
+
     session = async_get_clientsession(hass)
-    inverter = kostal.Piko(session, data["host"], data["username"], data["password"])
+    inverter = kostal.Piko(session, host, username, password)
     res = await inverter.fetch_props(
         kostal.SettingsGeneral.INVERTER_NAME,
         kostal.SettingsGeneral.INVERTER_MAKE,
@@ -60,12 +65,26 @@ class KostalPikoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             try:
-                name, make, serial = await test_connection(self.hass, user_input)
+                host = user_input["host"]
+                username = user_input["username"]
+                password = user_input["password"]
+
+                # Opportunistically try to add http:// if neither http:// nor https:// is specified
+                if not host.startswith("http"):
+                    host = "http://" + str(host)
+
+                # host cannot end with / since more path parameters are added to it by the library
+                if host.endswith("/"):
+                    host = host[:-1]
+
+                setup_input = {"host": host, "username": username, "password": password}
+
+                name, make, serial = await test_connection(self.hass, setup_input)
                 await self.async_set_unique_id(serial)
                 self._abort_if_unique_id_configured()
 
                 return self.async_create_entry(
-                    title=f"{make} {name} ({serial})", data=user_input
+                    title=f"{make} {name} ({serial})", data=setup_input
                 )
 
             except ValueError as err:

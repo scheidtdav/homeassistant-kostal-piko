@@ -9,9 +9,14 @@
     "step": {
       "user": {
         "data": {
-          "host": "Host",
+          "host": "Hostname oder IP Adresse",
           "username": "Benutzername",
           "password": "Passwort"
+        },
+        "data_description": {
+          "host": "Der Hostname oder die IP-Adresse (inkl. http:// oder https://) des Wechselrichters.",
+          "username": "Der Benutzername mit dem sich auf der Webseite des Wechselrichters eingeloggt wird.",
+          "password": "Das Passwort mit dem sich auf der Webseite des Wechselrichters eingeloggt wird."
         }
       }
     },
