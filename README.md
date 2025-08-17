@@ -15,6 +15,7 @@ It was tested with the following inverters:
 - Piko 12 running FW v05.61
 - Piko 10 BA running FW v2.32
 - Piko 8.0 BA running FW v2.30 / UI v6.41
+- Piko 8.0 BA running FW v2.32 / UI v6.41
 - Piko 6.0 running FW v2.22
 - Piko 5.5 NG running FW v05.50
 - Piko 5.5 running FW v05.61
