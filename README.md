@@ -75,6 +75,7 @@ Due to limitations of the api of the inverter it is recommended to disable senso
 The integration is known to **not work** with the following inverters and firmwares.
 For these it is recommended to try other custom integrations like [kostalpiko-homeassistant by rcasula](https://github.com/rcasula/kostalpiko-homeassistant), which uses a different api to talk to the inverter.
 - Piko 5.5 DCS running FW v5.44
+- Piko 8.3 running FW v4.02
 
 ## Installation
 
