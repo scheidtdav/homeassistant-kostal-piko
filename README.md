@@ -87,6 +87,22 @@ Once added, search for "Kostal Piko" and install the integration.
 
 After installing the integration, simply add it to your Home Assistant as you would any other integration using the UI.
 
+## Troubleshooting
+
+### Fetching Fails Indefinitely
+
+The PIKO series' webserver is known to not have the most computing power. 
+Therefore, it may get overwhelmed by the requests sent to it by the integration, especially if other applications also access it.
+Reducing the `update_interval` may help in these situations.
+There are two ways of achieving that:
+
+1. (Recommended) Using an automation
+    - Follow the [official documentation](https://www.home-assistant.io/common-tasks/general/#defining-a-custom-polling-interval) for changing an integrations polling interval
+1. Changing code (fine for quick testing)
+    - On your machine running Home Assistant, find the `custom_components` folder where the integration is installed
+    - Open the `kostal_piko/__init__.py` and change `update_interval=timedelta(seconds=15)` to your desired value (e.g. `seconds=60` which should be mostly safe for everyone)
+    - Reload Home Assistant to apply the changes
+
 ## Contributing
 
 Any help is appreciated.
