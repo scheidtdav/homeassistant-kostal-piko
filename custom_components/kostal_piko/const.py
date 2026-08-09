@@ -59,39 +59,6 @@ class KostalPikoEntityDescription(SensorEntityDescription):
 
 # Defines all possible sensors
 SENSOR_TYPES: tuple[KostalPikoEntityDescription, ...] = (
-    # Analog Input sensors
-    KostalPikoEntityDescription(
-        device_class=SensorDeviceClass.VOLTAGE,
-        key=str(kostal.ActualAnalogInputs.ANALOG1),
-        name="Analog Input 1",
-        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
-        state_class=SensorStateClass.MEASUREMENT,
-        formatter=round_one,
-    ),
-    KostalPikoEntityDescription(
-        device_class=SensorDeviceClass.VOLTAGE,
-        key=str(kostal.ActualAnalogInputs.ANALOG2),
-        name="Analog Input 2",
-        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
-        state_class=SensorStateClass.MEASUREMENT,
-        formatter=round_one,
-    ),
-    KostalPikoEntityDescription(
-        device_class=SensorDeviceClass.VOLTAGE,
-        key=str(kostal.ActualAnalogInputs.ANALOG3),
-        name="Analog Input 3",
-        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
-        state_class=SensorStateClass.MEASUREMENT,
-        formatter=round_one,
-    ),
-    KostalPikoEntityDescription(
-        device_class=SensorDeviceClass.VOLTAGE,
-        key=str(kostal.ActualAnalogInputs.ANALOG4),
-        name="Analog Input 4",
-        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
-        state_class=SensorStateClass.MEASUREMENT,
-        formatter=round_one,
-    ),
     # Battery sensors
     KostalPikoEntityDescription(
         device_class=SensorDeviceClass.VOLTAGE,
@@ -137,6 +104,39 @@ SENSOR_TYPES: tuple[KostalPikoEntityDescription, ...] = (
         key=str(kostal.ActualBattery.TEMPERATURE),
         name="Battery Temperature",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        formatter=round_one,
+    ),
+    # Analog Input sensors
+    KostalPikoEntityDescription(
+        device_class=SensorDeviceClass.VOLTAGE,
+        key=str(kostal.ActualAnalogInputs.ANALOG1),
+        name="Analog Input 1",
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        state_class=SensorStateClass.MEASUREMENT,
+        formatter=round_one,
+    ),
+    KostalPikoEntityDescription(
+        device_class=SensorDeviceClass.VOLTAGE,
+        key=str(kostal.ActualAnalogInputs.ANALOG2),
+        name="Analog Input 2",
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        state_class=SensorStateClass.MEASUREMENT,
+        formatter=round_one,
+    ),
+    KostalPikoEntityDescription(
+        device_class=SensorDeviceClass.VOLTAGE,
+        key=str(kostal.ActualAnalogInputs.ANALOG3),
+        name="Analog Input 3",
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        state_class=SensorStateClass.MEASUREMENT,
+        formatter=round_one,
+    ),
+    KostalPikoEntityDescription(
+        device_class=SensorDeviceClass.VOLTAGE,
+        key=str(kostal.ActualAnalogInputs.ANALOG4),
+        name="Analog Input 4",
+        native_unit_of_measurement=UnitOfElectricPotential.VOLT,
         state_class=SensorStateClass.MEASUREMENT,
         formatter=round_one,
     ),

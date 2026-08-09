@@ -3,7 +3,9 @@ from datetime import timedelta
 import logging
 from math import ceil
 
-from kostal import InfoVersions, Piko, SettingsGeneral
+import backoff
+
+from kostal import InfoVersions, Piko, SettingsGeneral, ActualBattery
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME, Platform
@@ -81,6 +83,7 @@ class PikoUpdateCoordinator(DataUpdateCoordinator):
         if dxs_id in self._fetch:
             self._fetch.remove(dxs_id)
 
+    @backoff.on_exception(backoff.expo, UpdateFailed, logger=_LOGGER, max_tries=4, raise_on_giveup=True)
     async def _async_update_data(self) -> dict[int, str]:
         """Fetch data from API endpoint."""
         to_fetch = []
@@ -101,7 +104,13 @@ class PikoUpdateCoordinator(DataUpdateCoordinator):
                 for dxs_id in fetch_segment:
                     dxs_entry = fetched.get_entry_by_id(dxs_id)
                     if dxs_entry is not None:
+                        if dxs_id in [ActualBattery.CHARGE, ActualBattery.TEMPERATURE,
+                                        ActualBattery.VOLTAGE] and dxs_entry.value == 0:
+                            _LOGGER.warning(f'Battery {dxs_id} is zero: {dxs_entry.value}')
+                            raise UpdateFailed('Zeros at updating battery data - transmission error')
                         return_data[dxs_id] = dxs_entry.value
+            except UpdateFailed as err:
+                raise err
             except Exception as err:  # pylint: disable=broad-except
                 _LOGGER.warning(
                     "Fetching of segment %i failed, increasing exception count. Error message: %s",
